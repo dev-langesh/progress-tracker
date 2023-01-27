@@ -10,4 +10,4 @@ const schema = mongoose.Schema(
   }
 );
 
-export const Task = mongoose.model("task", schema);
+export const Task = mongoose.models.task || mongoose.model("task", schema);

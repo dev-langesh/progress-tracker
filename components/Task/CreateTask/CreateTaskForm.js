@@ -1,12 +1,30 @@
+import { addTask } from "@/src/features/TaskSlice";
 import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function CreateTaskForm() {
+  const dispatch = useDispatch();
+
   return (
     <Formik
       initialValues={{ title: "", url: "" }}
-      onSubmit={(values) => {
-        console.log(values);
+      onSubmit={async (values, { resetForm }) => {
+        const req = await fetch("/api/task", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
+
+        const data = await req.json();
+
+        if (data.task) {
+          // console.log(data.task);
+          dispatch(addTask(data.task));
+          resetForm();
+        }
       }}
     >
       {() => {
