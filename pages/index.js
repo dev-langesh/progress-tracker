@@ -1,20 +1,17 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import ProgressBar from "@/components/Progress";
 import { signIn, useSession } from "next-auth/react";
-
-const inter = Inter({ subsets: ["latin"] });
+import TaskContainer from "@/components/Task/TaskContainer";
 
 export default function Home() {
+  const { data: session } = useSession();
 
-  const { data:session } = useSession()
-
-  if (session) {
-    return <h1>Signed in</h1>
+  if (!session) {
+    return <h1></h1>;
   }
-  
+
   return (
     <>
       <Head>
@@ -24,9 +21,10 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="">
+      <main className=" p-4 space-y-4 text-white">
         <ProgressBar />
-        <button onClick={() => signIn()}>Sing in</button>
+
+        <TaskContainer />
       </main>
     </>
   );
