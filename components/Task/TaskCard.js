@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import { IconButton } from "@mui/material";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { completedTasks, getAllTask } from "@/src/features/TaskSlice";
 
 export default function TaskCard({ title, url, _id }) {
   const [completed, setCompleted] = useState(false);
 
   const { data: session } = useSession();
+
+  const completed_Tasks = useSelector(completedTasks);
+
+  useEffect(() => {
+    if (completed_Tasks.includes(_id)) {
+      setCompleted(true);
+    }
+  }, [completed_Tasks, session]);
 
   async function setAsCompleted() {
     const req = await axios.post("/api/status", {
