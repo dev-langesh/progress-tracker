@@ -17,7 +17,13 @@ const TaskSlice = createSlice({
     },
 
     addTask: (state, action) => {
-      state.value.tasks.push(action.payload);
+      state.value.tasks.unshift(action.payload);
+    },
+
+    deleteTask: (state, action) => {
+      state.value.tasks = state.value.tasks.filter((task) => {
+        return task != action.payload;
+      });
     },
 
     setCompleted: (state, action) => {
@@ -30,7 +36,7 @@ const TaskSlice = createSlice({
   },
 });
 
-export const { setTasks, addTask, setCompleted, markAsCompleted } =
+export const { setTasks, addTask, setCompleted, markAsCompleted, deleteTask } =
   TaskSlice.actions;
 
 export default TaskSlice.reducer;

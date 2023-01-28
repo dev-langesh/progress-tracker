@@ -20,7 +20,6 @@ export default function TaskContainer() {
       const data = req.data;
 
       if (!req.data.error) {
-        console.log(data);
         dispatch(setTasks(data));
       }
     }

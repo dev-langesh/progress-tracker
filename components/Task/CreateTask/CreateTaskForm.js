@@ -32,7 +32,6 @@ export default function CreateTaskForm({ close }) {
         const data = await req.json();
 
         if (data.task) {
-          // console.log(data.task);
           dispatch(addTask(data.task));
           resetForm();
 

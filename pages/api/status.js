@@ -13,6 +13,17 @@ export default async function handler(req, res) {
       case "POST":
         const { email, id } = req.body;
 
+        const duplicate = await User.findOne({
+          email,
+          completed: { $in: [id] },
+        });
+
+        console.log(duplicate);
+
+        if (duplicate) {
+          throw new Error("Already Completed");
+        }
+
         const user = await User.findOneAndUpdate(
           { email },
           { $push: { completed: id } }

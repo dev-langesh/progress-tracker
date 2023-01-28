@@ -4,8 +4,6 @@ import React from "react";
 export default function Header() {
   const { data: session } = useSession();
 
-  console.log(session);
-
   return (
     <div className="w-full bg-blue-500 p-4 text-white flex justify-between">
       <h1>Progress Tracker</h1>

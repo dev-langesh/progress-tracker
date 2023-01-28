@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { completedTasks, getAllTask } from "@/src/features/TaskSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  completedTasks,
+  deleteTask,
+  getAllTask,
+  markAsCompleted,
+} from "@/src/features/TaskSlice";
 
 export default function TaskCard({ title, url, _id }) {
   const [completed, setCompleted] = useState(false);
@@ -13,6 +18,8 @@ export default function TaskCard({ title, url, _id }) {
   const { data: session } = useSession();
 
   const completed_Tasks = useSelector(completedTasks);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (completed_Tasks.includes(_id)) {
@@ -26,9 +33,18 @@ export default function TaskCard({ title, url, _id }) {
       id: _id,
     });
 
+    if (!req.data.error) {
+      setCompleted(true);
+      dispatch(markAsCompleted(_id));
+    }
+  }
+
+  async function delete_task() {
+    const req = await axios.delete(`/api/task/?id=${_id}`);
+
     console.log(req.data);
 
-    if (!req.data.error) setCompleted(true);
+    dispatch(deleteTask(_id));
   }
 
   return (
@@ -39,6 +55,9 @@ export default function TaskCard({ title, url, _id }) {
       <IconButton onClick={setAsCompleted} sx={{ color: "white" }}>
         {completed ? <ThumbUpAltIcon /> : <ThumbUpOffAltIcon />}
       </IconButton>
+      {/* <Button onClick={delete_task} sx={{ color: "red" }}>
+        Delete
+      </Button> */}
     </div>
   );
 }
