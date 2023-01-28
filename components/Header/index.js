@@ -7,7 +7,7 @@ export default function Header() {
   console.log(session);
 
   return (
-    <div className="w-full bg-green-500 p-4 text-white flex justify-between">
+    <div className="w-full bg-blue-500 p-4 text-white flex justify-between">
       <h1>Progress Tracker</h1>
 
       {session ? (

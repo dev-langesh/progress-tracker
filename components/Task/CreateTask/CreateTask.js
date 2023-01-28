@@ -13,7 +13,7 @@ export default function CreateTask() {
         {showForm ? "Close Form" : "Create Task"}
       </div>
 
-      {showForm && <CreateTaskForm />}
+      {showForm && <CreateTaskForm close={setShowForm} />}
     </section>
   );
 }

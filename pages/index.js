@@ -1,12 +1,32 @@
 import Head from "next/head";
-import Image from "next/image";
-import styles from "@/styles/Home.module.css";
 import ProgressBar from "@/components/Progress";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import TaskContainer from "@/components/Task/TaskContainer";
+import axios from "axios";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setCompleted } from "@/src/features/TaskSlice";
 
 export default function Home() {
   const { data: session } = useSession();
+
+  const dispatch = useDispatch();
+
+  async function createUser() {
+    if (session) {
+      const req = await axios.post("/api/user", { email: session.user.email });
+
+      const data = req.data;
+
+      if (data.user) {
+        dispatch(setCompleted(data.user.completed));
+      }
+    }
+  }
+
+  useEffect(() => {
+    createUser();
+  }, [session]);
 
   if (!session) {
     return <h1></h1>;

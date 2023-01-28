@@ -1,13 +1,11 @@
 import { config } from "@/data";
 import { getAllTask, setTasks } from "@/src/features/TaskSlice";
 import { useSession } from "next-auth/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useSwr from "swr";
 import CreateTask from "./CreateTask/CreateTask";
 import TaskCard from "./TaskCard";
-
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
+import axios from "axios";
 
 export default function TaskContainer() {
   const { data: session } = useSession();
@@ -15,12 +13,20 @@ export default function TaskContainer() {
 
   const dispatch = useDispatch();
 
-  const { data, isLoading, error } = useSwr("/api/task", fetcher);
+  useEffect(() => {
+    async function getData() {
+      const req = await axios.get("/api/task");
 
-  if (!error) {
-    console.log(data);
-    dispatch(setTasks(data));
-  }
+      const data = req.data;
+
+      if (!req.data.error) {
+        console.log(data);
+        dispatch(setTasks(data));
+      }
+    }
+
+    getData();
+  }, []);
 
   return (
     <div className="flex flex-col space-y-4">

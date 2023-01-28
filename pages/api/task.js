@@ -17,6 +17,8 @@ export default async function handler(req, res) {
 
         return res.json({ task });
     }
+
+    res.json({});
   } catch (err) {
     if (err) res.json({ error: err.message });
   }
