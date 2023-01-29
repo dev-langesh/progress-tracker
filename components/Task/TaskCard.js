@@ -11,6 +11,7 @@ import {
   getAllTask,
   markAsCompleted,
 } from "@/src/features/TaskSlice";
+import { config } from "@/data";
 
 export default function TaskCard({ title, url, _id }) {
   const [completed, setCompleted] = useState(false);
@@ -53,11 +54,17 @@ export default function TaskCard({ title, url, _id }) {
         {title}
       </a>
       <IconButton onClick={setAsCompleted} sx={{ color: "white" }}>
-        {completed ? <ThumbUpAltIcon /> : <ThumbUpOffAltIcon />}
+        {completed ? (
+          <ThumbUpAltIcon sx={{ color: "blue" }} />
+        ) : (
+          <ThumbUpOffAltIcon />
+        )}
       </IconButton>
-      {/* <Button onClick={delete_task} sx={{ color: "red" }}>
-        Delete
-      </Button> */}
+      {session.user.email === config.admin_email && (
+        <Button onClick={delete_task} sx={{ color: "red" }}>
+          Delete
+        </Button>
+      )}
     </div>
   );
 }

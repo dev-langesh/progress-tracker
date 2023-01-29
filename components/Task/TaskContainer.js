@@ -31,6 +31,9 @@ export default function TaskContainer() {
     <div className="flex flex-col space-y-4">
       {session.user.email == config.admin_email && <CreateTask />}
 
+      <h1 className="py-3 text-center font-bold font-sans text-xl">
+        Your Tasks
+      </h1>
       {tasks.map((task) => {
         return <TaskCard key={task._id} {...task} />;
       })}

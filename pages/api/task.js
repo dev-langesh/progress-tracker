@@ -1,5 +1,6 @@
 import { connectDb } from "@/lib/connectDb";
 import { Task } from "@/model/taskModel";
+import { User } from "@/model/user.model";
 
 export default async function handler(req, res) {
   const { title, url } = req.body;
@@ -21,6 +22,8 @@ export default async function handler(req, res) {
 
       case "DELETE":
         const deletedTask = await Task.findByIdAndDelete(id);
+
+        await User.updateMany({}, { $pull: { completed: id } });
 
         return res.json({ deletedTask });
 
